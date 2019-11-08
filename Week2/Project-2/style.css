@@ -2,6 +2,12 @@
 * {
   box-sizing: border-box;
 }
+.alert-error {
+  color: red;
+  background-color: #f8d7da;
+  padding: 20px;
+  text-align: center;
+}
 body {
   background-color: #c1c1c1;
   text-align: left;

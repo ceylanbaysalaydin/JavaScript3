@@ -70,7 +70,10 @@ function renderRepoContributors(data) {
   const h6 = createAndAppend('h6', ul, { text: 'Contributions' });
   fetchJSON(selectedRepo['contributors_url'])
     .then(data => data.forEach(renderContributionsDetails))
-    .catch(err => console.log(err));
+    .catch(err => {
+      const ul = document.querySelector('#contributorsList');
+      errorHandle(err, ul);
+    });
   return data;
 }
 function renderRepoDetails(repo, ul) {
@@ -97,19 +100,36 @@ function setAndSortSelectOption(data) {
   });
   return data;
 }
+function errorHandle(err, appendTo) {
+  createAndAppend('div', appendTo, {
+    text: `${err.message}`,
+    class: 'alert-error',
+  });
+}
 async function fetchJSON(url) {
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
+  const response = await fetch(url).catch(err => {
+    throw new Error(err);
+  });
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  } else {
+    const data = await response.json();
+    return data;
+  }
 }
 
 function main(url) {
   fetchJSON(url)
     .then(data => setAndSortSelectOption(data))
-    .then(data => renderRepoContainer(data))
-    .then(data => renderRepoContributors(data))
-    .then(data => renderSelectedOptionOnChange(data))
-    .catch(err => console.log(err));
+    .then(data => {
+      renderRepoContainer(data);
+      renderRepoContributors(data);
+      renderSelectedOptionOnChange(data);
+    })
+    .catch(err => {
+      const root = document.querySelector('#root');
+      errorHandle(err, root);
+    });
 }
 const HYF_REPOS_URL =
   'https://api.github.com/orgs/HackYourFuture/repos?per_page=100';
