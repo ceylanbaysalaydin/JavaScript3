@@ -71,7 +71,6 @@ function renderRepoContributors(data) {
   fetchJSON(selectedRepo['contributors_url'])
     .then(data => data.forEach(renderContributionsDetails))
     .catch(err => {
-      const ul = document.querySelector('#contributorsList');
       errorHandle(err, ul);
     });
   return data;
