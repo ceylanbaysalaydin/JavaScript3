@@ -18,7 +18,6 @@
 
   const { Model, HeaderView, RepoView, ContributorsView, ErrorView } = window;
   const { createAndAppend } = window.Util;
-
   class App {
     constructor(account) {
       const containers = App.renderContainers();
