@@ -106,30 +106,25 @@ function errorHandle(err, appendTo) {
   });
 }
 async function fetchJSON(url) {
-  try {
-    const response = await axios.get(url);
-    if (!response.statusText) {
-      throw new Error(`${response.status} ${response.statusText}`);
-    } else {
-      return response.data;
-    }
-  } catch (e) {
-    throw new Error(e);
+  const response = await axios.get(url);
+  if (!response.statusText) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  } else {
+    return response.data;
   }
 }
 
-function main(url) {
-  fetchJSON(url)
-    .then(data => setAndSortSelectOption(data))
-    .then(data => {
-      renderRepoContainer(data);
-      renderRepoContributors(data);
-      updateContainersOnChange(data);
-    })
-    .catch(e => {
-      const root = document.querySelector('#root');
-      errorHandle(e, root);
-    });
+async function main(url) {
+  try {
+    const data = await fetchJSON(url);
+    setAndSortSelectOption(data);
+    renderRepoContainer(data);
+    renderRepoContributors(data);
+    updateContainersOnChange(data);
+  } catch (e) {
+    const root = document.querySelector('#root');
+    errorHandle(e, root);
+  }
 }
 const HYF_REPOS_URL =
   'https://api.github.com/orgs/HackYourFuture/repos?per_page=100';

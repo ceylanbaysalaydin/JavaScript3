@@ -21,6 +21,31 @@
       });
       return elem;
     }
+    static tableRowData(listTable, th, td, src = '') {
+      const tableRow = Util.createAndAppend('tr', listTable);
+      const rowHeader = Util.createAndAppend('th', tableRow, {
+        text: [th],
+        class: 'th',
+      });
+      if (src !== '') {
+        const rowData = Util.createAndAppend('td', tableRow);
+        const link = Util.createAndAppend('a', rowData, {
+          text: [td],
+          href: [src],
+          target: '_blank',
+        });
+      } else {
+        const rowData = Util.createAndAppend('td', tableRow, {
+          text: [td],
+          class: 'td',
+        });
+      }
+    }
+    static convertTime(timeWithZone) {
+      const day = new Date(timeWithZone);
+      const updatedTime = day.toLocaleString();
+      return updatedTime;
+    }
   }
 
   window.Util = Util;
