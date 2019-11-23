@@ -1,9 +1,7 @@
 'use strict';
 
 {
-  const { createAndAppend } = window.Util;
-  const { tableRowData } = window.Util;
-  const { convertTime } = window.Util;
+  const { createAndAppend, tableRowData, convertTime } = window.Util;
   class RepoView {
     constructor(container) {
       this.container = container;
